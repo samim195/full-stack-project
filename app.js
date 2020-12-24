@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const rp = require("request-promise");
+const http = require("http");
+const { response } = require("express");
 // mongod --dbpath=/usr/local/mongodb/bin
 const port = 3000;
 mongoose.connect("mongodb://localhost:27017/randomDB", { useUnifiedTopology: true, useNewUrlParser: true });
@@ -30,6 +33,10 @@ var user = new User ({
 //     }
 // });
 
+function callApi() {
+    console.log("btccccccccccccc");
+}
+
 function dbQuery(userEmail, userPassword) {
     User.findOne({email: userEmail}, function (err, user){
         if (err) {
@@ -43,6 +50,7 @@ function dbQuery(userEmail, userPassword) {
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json({ limit: '1mb' }));
 
 app.get(["/", "/home"], function(req, res) {
     res.sendFile(__dirname + "/home.html");
@@ -114,8 +122,48 @@ app.post("/login", function(req, res) {
             res.redirect('/home')
         }
     });
-})
+});
 
+const requestOptions = {
+    method: 'GET',
+    uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+    qs: {
+        'start' : '1',
+        'limit' : '10',
+        'convert' : 'USD'
+    },
+    headers: {
+        'X-CMC_PRO_API_KEY': '84a48385-9cb0-467f-9a63-09b640b2db75'
+    },
+    json: true,
+    gzip: true
+};
+
+app.get("/crypto", function(req, res) {
+    res.sendFile(__dirname + "/crypto.html");
+});
+
+app.post("/crypto", function(req, res) {
+    var value = req.body.v;
+    console.log(value);
+    var results;
+    rp(requestOptions).then(response => {
+        // console.log('API call response:', response['data'][0]);
+        if (value === "btc") {
+            results = console.log(response['data'][0]);
+        } else if(value === "xrp") {
+            results = console.log(response['data'][3]);
+        }
+        res.json({
+            status: "success",
+            values: results
+        });
+    }).catch((err) => {
+        console.log('API call error:', err.message);
+    });
+
+    // console.log(res);
+});
 
 app.listen(3000, () => {
     console.log("Express app running on port: $(port)");

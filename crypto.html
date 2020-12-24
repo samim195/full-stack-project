@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Crypto</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!------ Include the above in your HEAD tag ---------->
+    </head>
+    <body>
+        <!-- <script text="text/javascript" src="app.js"></script> -->
+        <div class="alert alert-primary" role="alert">
+            <button type="button" value="btc" id="btc" onclick="callApi('btc')" class="btn btn-primary">Bitcoin</button>
+        </div>
+        <div class="alert alert-primary">
+            <button type="button" class="btn btn-secondary" value='xrp' id='xrp' onclick="callApi('xrp')">Xrp</button>
+        </div>
+        <div class="alert alert-primary" role="alert">
+            <button type="button" value="eth" id="eth" onclick="callApi('eth')" class="btn btn-success">Ethereum</button>
+        </div>
+        <div class="alert alert-primary" role="alert">
+            <button type="button" value="eos" id="eos" onclick="callApi('eos')" class="btn btn-danger">Eos</button>
+        </div>
+        <div class="alert alert-primary" role="alert">
+            <button type="button" value="bch" id="bch" onclick="callApi('bch')" class="btn btn-warning">Bitcoin Cash</button>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function callApi(c_id) {
+                // console.log("running onclick");
+                v = document.getElementById(c_id).value;
+                console.log(v);
+                const data = { v };
+                const options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            fetch('/crypto', options).then(response => {
+                console.log(response);
+            });
+            }
+        </script>
+    </body>
+</html>
