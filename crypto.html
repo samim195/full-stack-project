@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Crypto</title>
         <meta name="description" content="">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -17,6 +18,9 @@
         <div class="alert alert-primary" role="alert">
             <button type="button" value="btc" id="btc" onclick="callApi('btc')" class="btn btn-primary">Bitcoin</button>
         </div>
+        <div class='btc'>
+
+        </div>
         <div class="alert alert-primary">
             <button type="button" class="btn btn-secondary" value='xrp' id='xrp' onclick="callApi('xrp')">Xrp</button>
         </div>
@@ -24,7 +28,7 @@
             <button type="button" value="eth" id="eth" onclick="callApi('eth')" class="btn btn-success">Ethereum</button>
         </div>
         <div class="alert alert-primary" role="alert">
-            <button type="button" value="eos" id="eos" onclick="callApi('eos')" class="btn btn-danger">Eos</button>
+            <button type="button" value="ltc" id="ltc" onclick="callApi('ltc')" class="btn btn-danger">Ltc</button>
         </div>
         <div class="alert alert-primary" role="alert">
             <button type="button" value="bch" id="bch" onclick="callApi('bch')" class="btn btn-warning">Bitcoin Cash</button>
@@ -34,18 +38,29 @@
             function callApi(c_id) {
                 // console.log("running onclick");
                 v = document.getElementById(c_id).value;
-                console.log(v);
+                // console.log(v);
                 const data = { v };
                 const options = {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json'
-                }
-            };
-            fetch('/crypto', options).then(response => {
-                console.log(response);
-            });
+                    }
+                };
+                fetch('/crypto', options)
+                .then(response => response.json())
+                .then(data => {
+                    const dictionary = data['values'];
+                    const divElement = document.getElementById(v);
+                    console.log(divElement);
+                    // divElement.innerHTML = "<div>" + JSON.stringify(dictionary, null, 4) + "</div>"
+                    for (var [key, value] of Object.entries(dictionary)){
+                        // console.log(key, value);
+                        // divElement.after("<div><p>" + data['values'] + "</p></div>");
+                        divElement.innerHTML += "<div>" + key + ":" + value + "</div>";
+                    }
+                    // console.log(data['values'])
+                });
             }
         </script>
     </body>

@@ -146,14 +146,20 @@ app.get("/crypto", function(req, res) {
 app.post("/crypto", function(req, res) {
     var value = req.body.v;
     console.log(value);
-    var results;
     rp(requestOptions).then(response => {
-        // console.log('API call response:', response['data'][0]);
+        // console.log('API call response:', response['data']);
         if (value === "btc") {
-            results = console.log(response['data'][0]);
+            var results = response['data'][0];
         } else if(value === "xrp") {
-            results = console.log(response['data'][3]);
+            var results = response['data'][3];
+        } else if(value === "eth") {
+            var results = response['data'][1];
+        } else if(value === "ltc") {
+            var results = response['data'][4];
+        } else if(value === "bch") {
+            var results = response['data'][5];
         }
+        console.log(results);
         res.json({
             status: "success",
             values: results
