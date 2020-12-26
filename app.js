@@ -124,6 +124,7 @@ app.post("/login", function(req, res) {
     });
 });
 
+
 const requestOptions = {
     method: 'GET',
     uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
@@ -133,7 +134,7 @@ const requestOptions = {
         'convert' : 'USD'
     },
     headers: {
-        'X-CMC_PRO_API_KEY': '84a48385-9cb0-467f-9a63-09b640b2db75'
+        'X-CMC_PRO_API_KEY': 'something'
     },
     json: true,
     gzip: true
@@ -142,6 +143,7 @@ const requestOptions = {
 app.get("/crypto", function(req, res) {
     res.sendFile(__dirname + "/crypto.html");
 });
+
 
 app.post("/crypto", function(req, res) {
     var value = req.body.v;
